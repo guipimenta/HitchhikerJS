@@ -21,8 +21,9 @@
   },
   "homepage": "https://github.com/guipimenta/HitchhikerJS#readme",
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-ts": "=0.4.2"
+    "grunt": "",
+    "typescript": "",
+    "grunt-contrib-watch": "",
+    "grunt-typescript": ""
   }
 }

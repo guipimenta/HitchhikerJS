@@ -1,20 +1,22 @@
 module.exports = function (grunt) {
-    grunt.loadNpmTasks("grunt-ts");
+    grunt.loadNpmTasks("grunt-typescript");
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.initConfig({
-        ts: {
-            default: {
-                src: ['**/*.ts', "!node_modules/**"],
-                out: 'hitchhiker-concat.js',
+        pkg: grunt.file.readJSON('package.json'),
+        typescript: {
+            base: {
+                src: ['./src/**/*.ts'],
+                dest: 'build/hitchhiker-concat.js',
                 options: {
-                    module: 'commonjs'
+                    module: 'commonjs',
+                    target: 'ES5'
                 }
             }
         },
         watch: {
             files: 'src/**/*.ts',
-            tasks: ['ts']
+            tasks: ['typescript']
         },
     });
  
