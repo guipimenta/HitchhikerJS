@@ -1,0 +1,29 @@
+{
+  "name": "hitchhikerjs",
+  "version": "0.0.1",
+  "description": "mouse tracking javascript library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guipimenta/HitchhikerJS.git"
+  },
+  "keywords": [
+    "mousetracker",
+    "javascript"
+  ],
+  "author": "Guilherme P. Sorregotti",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/guipimenta/HitchhikerJS/issues"
+  },
+  "homepage": "https://github.com/guipimenta/HitchhikerJS#readme",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-typescript": "^0.8.0",
+    "typescript": "^1.8.10"
+  }
+}
