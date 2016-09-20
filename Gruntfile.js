@@ -1,22 +1,20 @@
 module.exports = function (grunt) {
-    grunt.loadNpmTasks('grunt-typescript');
+    grunt.loadNpmTasks("grunt-ts");
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
-        typescript: {
-            base: {
-                src: ['lib/**/*.ts'],
-                dest: 'js/PixelVisionJSDemos.js',
+        ts: {
+            default: {
+                src: ['**/*.ts', "!node_modules/**"],
+                out: 'hitchhiker-concat.js',
                 options: {
-                    module: 'amd',
-                    target: 'es5'
+                    module: 'commonjs'
                 }
             }
         },
         watch: {
-            files: '**/*.ts',
-            tasks: ['typescript']
+            files: 'src/**/*.ts',
+            tasks: ['ts']
         },
     });
  
