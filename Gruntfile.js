@@ -8,7 +8,7 @@ module.exports = function (grunt) {
         typescript: {
             base: {
                 src: ['./src/**/*.ts'],
-                dest: 'build/hitchhiker.js',
+                dest: 'build/',
                 options: {
                     module: 'commonjs',
                     target: 'ES5'

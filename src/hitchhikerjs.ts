@@ -1,3 +1,3 @@
 /// <reference path="modules/bootstrap/bootstrap.ts" />
-
-Bootstrap.Bootstrap();
+/// <reference path="modules/core/configuration.ts" />
+/// <reference path="modules/models/session.ts" />
