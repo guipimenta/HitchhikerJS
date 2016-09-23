@@ -7,32 +7,32 @@ module Models {
 	* Must hold information about user over the website
 	*/
 	export interface Session {
-		userTrackingId: integer;
+		userTrackingId: number;
 		name: string; 		//What is this field for? We can get the customer name by his ID
-		cookieId: integer; 	//SessionId is more straightforward
+		cookieId: number; 	//SessionId is more straightforward
 		location: string; 	//This will be the country, state, city? 
 		browser: string;
 		os: string; 		//Operational System
 		device: string;		// Samsung, nokia, iPhone etc
 		ip: string;		//We definetly need the IP, but I don`t know if store as a string is the perfet solution
 		isRobot: boolean; 	//We need to try to mark Robot sessions...
-		createdAt: date;
+		createdAt: number;	// let's just send unix timestamp?
 	}
 	
 	export interface Transit {
 		transitId: integer;
-		duration: float; 	//We need to track the duration of a transit, not sure how to make this happen
-		sessionId: integer;
-		createdAt: date;
+		duration: number; 	//We need to track the duration of a transit, not sure how to make this happen
+		sessionId: number;
+		createdAt: number;	// unix timestamp
 	} 
 	
 	//Track the user Hit
-	export interface Hit{
-		hitID: integer;
-		transitId: integer;
-		clickId: integer;	//Start on 1 if is the first click at the website for the given transit, go on ascending order
+	export interface Hit {
+		hitID: number;
+		transitId: number;
+		clickId: number;	//Start on 1 if is the first click at the website for the given transit, go on ascending order
 		referrerUrl: string;
-		traffifChannelId: integer;
+		traffifChannelId: number;
 		refTag: string; 	//We can send a parameter to track custom sources
 		toPage: string;
 		fromPage: string;
@@ -43,9 +43,9 @@ module Models {
 	}
 	
 	//Track the search queries that happened at the website
-	export interface Search{
-		searchId: integer;
-		transitId:integer;
+	export interface Search {
+		searchId: number;
+		transitId:number;
 		query: string;
 	}
 }
