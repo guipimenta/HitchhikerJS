@@ -16,7 +16,13 @@ module Core {
             private pubUrl:string;
 
             publish(pubInfo:IPubInfo) {
-
+                $.ajax({
+                    url: this.pubUrl,
+                    method: "POST",
+                    data: {
+                        sessionInfo:pubInfo
+                    }
+                });
             }
 
             constructor(public pubConf: IPublisherConfig) {

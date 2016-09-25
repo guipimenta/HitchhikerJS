@@ -1,11 +1,7 @@
 {
-  "name": "hitchhikerjs",
+  "name": "demo-hitchhikersjs",
   "version": "0.0.1",
-  "description": "mouse tracking javascript library",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "demo of library use for mouse tracking javascript library",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/guipimenta/HitchhikerJS.git"
@@ -20,12 +16,9 @@
     "url": "https://github.com/guipimenta/HitchhikerJS/issues"
   },
   "homepage": "https://github.com/guipimenta/HitchhikerJS#readme",
-  "devDependencies": {
-    "grunt": "",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-watch": "",
-    "grunt-typescript": "",
-    "grunt-typings": "",
-    "typescript": ""
+  "devDependencies": {},
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0"
   }
 }

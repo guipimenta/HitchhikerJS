@@ -2,6 +2,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-typescript");
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-typings');
+    grunt.loadNpmTasks('grunt-contrib-concat');
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -17,13 +18,23 @@ module.exports = function (grunt) {
         },
         watch: {
             files: 'src/**/*.ts',
-            tasks: ['typescript']
+            tasks: ['typescript', 'concat']
         },
         typings: {
             install: {}
-        }
+        },
+        concat: {
+            options: {
+              separator: ';',
+            },
+            dist: {
+              src: ['build/**/*.js'],
+              dest: 'dist/hitchhiker.js',
+            },
+          }
     });
     grunt.registerTask('typings:install', ['typings'])
-    grunt.registerTask('fullbuild', ['typings', 'typescript'])
-    grunt.registerTask('default', ['watch']);
+    grunt.registerTask('build:full', ['typings', 'typescript'])
+    grunt.registerTask('default', ['watch', 'concat']);
+    grunt.registerTask("hj:concat", ['concat']);
 }

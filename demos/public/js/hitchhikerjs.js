@@ -3,4 +3,3 @@
 /// <reference path="modules/core/publishers.ts" />
 /// <reference path="modules/models/session.ts" />
 /// <reference path="../typings/index.d.ts" />
-

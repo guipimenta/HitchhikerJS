@@ -3,6 +3,7 @@
     "jquery": "registry:dt/jquery#1.10.0+20160908203239"
   },
   "globalDependencies": {
+    "bowser": "registry:dt/bowser#1.0.0+20160829180220",
     "js-cookie": "registry:dt/js-cookie#2.0.0+20160317120654"
   }
 }

@@ -9,12 +9,11 @@ module Core {
             registerPublisher(publisher:IPublisher);
         }
 
-        export interface ISessionHighjackerConfig {
-
-        }
+        export interface ISessionHighjackerConfig {}
 
         export class SessionHighjacker implements IHighjacker {
             public publisher:IPublisher;
+            
             registerPublisher(publisher:IPublisher) {
                 this.publisher = publisher;
             }
@@ -25,14 +24,20 @@ module Core {
             * (don't have time to handle if )
             */
             sessionEvent() {
-                $(window).load(() => {
-
+                $(document).ready(() => {
+                    let session: Session = new Session();
+                    session.browser = bowser.name;
+                    // session.location (better fill this up on server-side cause of browser compatibility)
+                    // see: https://github.com/sebpiq/rhizome/issues/106
+                    session.os =  window.navigator["oscpu"] || window.navigator.platform;
+                    session.createdAt = Date.now();
+                    if(this.publisher !== undefined) {
+                        this.publisher.publish(session);
+                    }
                 });
             }
 
-            constructor() {
-
-            }
+            constructor() {}
         }
 
         $(window).bind('beforeunload', function(){
