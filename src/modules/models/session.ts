@@ -20,7 +20,7 @@ module Models {
 	}
 	
 	export interface Transit {
-		transitId: integer;
+		transitId: number;
 		duration: number; 	//We need to track the duration of a transit, not sure how to make this happen
 		sessionId: number;
 		createdAt: number;	// unix timestamp
