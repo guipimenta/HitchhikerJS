@@ -28,7 +28,10 @@ module.exports = function (grunt) {
               separator: ';',
             },
             dist: {
-              src: ['build/**/*.js'],
+              src: ['build/modules/models/session.js',
+                    'build/modules/core/publishers.js',
+                    'build/modules/core/highjacker.js',
+                    'build/modules/core/configuration.js'],
               dest: 'dist/hitchhiker.js',
             },
           }
