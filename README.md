@@ -30,7 +30,7 @@ npm install # it will install express and dependencies
 node server.js
 ```
 
-It will run a local server and load the baisc library.
+It will run a local server and load the basic library.
 
 ## Using Hitchhiker library
 
@@ -47,5 +47,6 @@ Using the concat version, just add to your html head:
 </script>
 ```
 
-Basic bootstrap will create a simple Highjacker to get data from user current session.
+Basic bootstrap will create a simple Highjacker to get data from user current session:
+
 **trackingUrl**: url to push data to.
