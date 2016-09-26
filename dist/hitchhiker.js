@@ -1,6 +1,14 @@
 /// <reference path="../../hitchhikerjs.ts" />
 var Models;
 (function (Models) {
+    var BrowserVersion = (function () {
+        function BrowserVersion(name, version) {
+            this.name = name;
+            this.version = version;
+        }
+        return BrowserVersion;
+    })();
+    Models.BrowserVersion = BrowserVersion;
     /**
     * This represents a user session
     * Must hold information about user over the website
@@ -42,6 +50,7 @@ var Core;
     var Highjacker;
     (function (Highjacker) {
         var Session = Models.Session;
+        var BrowserVersion = Models.BrowserVersion;
         ;
         var SessionHighjacker = (function () {
             function SessionHighjacker() {
@@ -58,7 +67,7 @@ var Core;
                 var _this = this;
                 $(document).ready(function () {
                     var session = new Session();
-                    session.browser = bowser.name;
+                    session.browser = new BrowserVersion(bowser.name, bowser.version);
                     // session.location (better fill this up on server-side cause of browser compatibility)
                     // see: https://github.com/sebpiq/rhizome/issues/106
                     session.os = window.navigator["oscpu"] || window.navigator.platform;
@@ -71,9 +80,21 @@ var Core;
             return SessionHighjacker;
         })();
         Highjacker.SessionHighjacker = SessionHighjacker;
-        $(window).bind('beforeunload', function () {
-            return 'Are you sure you want to leave?';
-        });
     })(Highjacker = Core.Highjacker || (Core.Highjacker = {}));
 })(Core || (Core = {}));
 ;/// <reference path="../../hitchhikerjs.ts" />
+;/// <reference path="../../hitchhikerjs.ts" />
+var Bootstrap;
+(function (Bootstrap) {
+    function BasicBootstrap(config) {
+        var sessionPublisher = new Core.Publishers.SessionPublisher({
+            pubUrl: config.trackingUrl
+        });
+        var sessionHighjacker = new Core.Highjacker.SessionHighjacker();
+        console.log("Highjacker created!");
+        sessionHighjacker.registerPublisher(sessionPublisher);
+        console.log("Registering Publisher created!");
+        sessionHighjacker.sessionEvent();
+    }
+    Bootstrap.BasicBootstrap = BasicBootstrap;
+})(Bootstrap || (Bootstrap = {}));

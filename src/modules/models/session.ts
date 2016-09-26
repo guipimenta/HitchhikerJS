@@ -1,7 +1,15 @@
 /// <reference path="../../hitchhikerjs.ts" />
 
 module Models {
-    import bb = Bootstrap.Bootstrap;
+    export class BrowserVersion {
+        name: string;
+        version: number | string;
+        constructor(name:string, version:number | string) {
+            this.name = name;
+            this.version = version;
+        }
+    } 
+
     /**
     * This represents a user session
     * Must hold information about user over the website
@@ -11,7 +19,7 @@ module Models {
         name: string;           //What is this field for? We can get the customer name by his ID
         cookieId: number;       //SessionId is more straightforward
         location: string;       //This will be the country, state, city? 
-        browser: string;
+        browser: BrowserVersion;
         os: string;             //Operational System
         device: string;         // Samsung, nokia, iPhone etc
         ip: string;             //We definetly need the IP, but I don`t know if store as a string is the perfet solution

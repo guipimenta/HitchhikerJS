@@ -4,6 +4,7 @@ module Core {
     export namespace Highjacker {
         import IPublisher = Core.Publishers.IPublisher;
         import Session = Models.Session;
+        import BrowserVersion = Models.BrowserVersion;
         export interface IHighjackedInfo {};
         export interface IHighjacker {
             registerPublisher(publisher:IPublisher);
@@ -26,7 +27,7 @@ module Core {
             sessionEvent() {
                 $(document).ready(() => {
                     let session: Session = new Session();
-                    session.browser = bowser.name;
+                    session.browser = new BrowserVersion(bowser.name, bowser.version);
                     // session.location (better fill this up on server-side cause of browser compatibility)
                     // see: https://github.com/sebpiq/rhizome/issues/106
                     session.os =  window.navigator["oscpu"] || window.navigator.platform;
@@ -39,9 +40,5 @@ module Core {
 
             constructor() {}
         }
-
-        $(window).bind('beforeunload', function(){
-          return 'Are you sure you want to leave?';
-        });
     }
 }

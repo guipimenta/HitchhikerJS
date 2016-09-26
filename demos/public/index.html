@@ -6,23 +6,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.0.0/bowser.min.js"></script>
     <script src="js/hitchhiker.js"></script>
-    <!-- <script src="js/modules/models/session.js"></script>
-    <script src="js/modules/core/publishers.js"></script>
-    <script src="js/modules/core/highjacker.js"></script>
-    <script src="js/modules/core/configuration.js"></script> -->
     <script>
-        // Bootstrap.Bootstrap();
-        
-        var sessionPublisher = new Core.Publishers.SessionPublisher({
-            pubUrl: "pubTest"
+        Bootstrap.BasicBootstrap({
+            trackingUrl: "/pubTest"
         });
-        
-        var sessionHighjacker = new Core.Highjacker.SessionHighjacker();
-        console.log("Highjacker created!");
-        sessionHighjacker.registerPublisher(sessionPublisher);
-        console.log("Registering Publisher created!");
-        sessionHighjacker.sessionEvent();
     </script>
   </head>
-  <body></body>
+  <body>
+      <h1>Tracking sample</h1>
+  </body>
 </html>
