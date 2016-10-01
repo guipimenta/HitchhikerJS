@@ -16,7 +16,9 @@
     "url": "https://github.com/guipimenta/HitchhikerJS/issues"
   },
   "homepage": "https://github.com/guipimenta/HitchhikerJS#readme",
-  "devDependencies": {},
+  "devDependencies": {
+    "cookie-parser": "^1.4.3"
+  },
   "dependencies": {
     "body-parser": "^1.15.2",
     "express": "^4.14.0"

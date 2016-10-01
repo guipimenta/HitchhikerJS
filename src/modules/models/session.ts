@@ -11,19 +11,26 @@ module Models {
     } 
 
     /**
+     * Defines if is mobile or tablet
+     * From Device and Browser we can infer the platform
+     */
+    export interface Device {
+        tablet: boolean;
+        mobile: boolean;
+    }
+
+    /**
     * This represents a user session
     * Must hold information about user over the website
     */
     export class Session {
-        userTrackingId: number;
-        name: string;           //What is this field for? We can get the customer name by his ID
-        cookieId: number;       //SessionId is more straightforward
-        location: string;       //This will be the country, state, city? 
-        browser: BrowserVersion;
-        os: string;             //Operational System
-        device: string;         // Samsung, nokia, iPhone etc
-        ip: string;             //We definetly need the IP, but I don`t know if store as a string is the perfet solution
-        isRobot: boolean;       //We need to try to mark Robot sessions...
+        userTrackingId: string; // Should it be set by the server-side
+        cookieId: number;       // SessionId is more straightforward
+        browser: BrowserVersion;// Browser IP
+        os: string;             // Operational System
+        device: Device;         // Samsung, nokia, iPhone etc
+        // ip: string;             // We definetly need the IP, but I don`t know if store as a string is the perfet solution
+        isRobot: boolean;       // We need to try to mark Robot sessions...
         createdAt: number;      // let's just send unix timestamp?
     }
     
