@@ -12,6 +12,24 @@ module Core {
             publish(pubInfo:IPubInfo);
         }
 
+        export class DefaultPublisher implements IPublisher {
+            private pubUrl:string;
+
+            publish(pubInfo:IPubInfo) {
+                $.ajax({
+                    url: this.pubUrl,
+                    method: "POST",
+                    data: {
+                        payload:pubInfo
+                    }
+                });
+            }
+
+            constructor(public pubConf: IPublisherConfig) {
+                this.pubUrl = pubConf.pubUrl;
+            }
+        }
+
         export class SessionPublisher implements IPublisher {
             private pubUrl:string;
 

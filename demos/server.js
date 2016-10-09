@@ -20,6 +20,12 @@ app.post('/pubTest', function (req, res) {
     res.send('Received');
 });
 
+app.post('/transit', function (req, res) {
+    console.log("Received!");
+    console.log(req.body);
+    res.send('Received');
+});
+
 app.get("/set/cookie", function(req, res) {
     res.send("cookie set");
 });

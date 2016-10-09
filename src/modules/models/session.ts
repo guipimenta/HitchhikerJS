@@ -35,10 +35,12 @@ module Models {
     }
     
     export interface Transit {
-        transitId: number;
+        transitId: string;
         duration: number;   //We need to track the duration of a transit, not sure how to make this happen
-        sessionId: number;
+        sessionId: string;
         createdAt: number;  // unix timestamp
+        lastLoad: number;   // last storage load timestamp
+        hits: Hit[];
     } 
     
     //Track the user Hit

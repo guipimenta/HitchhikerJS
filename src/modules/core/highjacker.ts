@@ -4,17 +4,26 @@ module Core {
     export namespace Highjacker {
         import IPublisher = Core.Publishers.IPublisher;
         import Session = Models.Session;
+        import Transit = Models.Transit;
         import BrowserVersion = Models.BrowserVersion;
         import SessionKey = Core.Configuration.SessionKey;
-        import SessionStorage = Core.Storage.SessionStorage;
+        import SessionStorageService = Core.Storage.SessionStorageService;
+        import TransitStorageService = Core.Storage.TransitStorageService;
         
         export interface IHighjackedInfo {};
-        export interface IHighjacker {
-            registerPublisher(publisher:IPublisher);
+        export class IHighjacker {
+            public publisher:IPublisher;
+            registerPublisher(publisher:IPublisher) {
+                this.publisher = publisher;
+            }
         }
 
         export interface ISessionHighjackerConfig {}
 
+        /**
+        * This function reaches out for cookie and find the cookie value for
+        * the username (that can be encripted, it doesn't matter)
+        */
         export function getCookieField(field:string) {
             let cookies:string[] = document.cookie.split(';');
             for(let i in cookies) {
@@ -25,8 +34,9 @@ module Core {
             }
         }
 
-        export class SessionHighjacker implements IHighjacker {
+        export class SessionHighjacker extends IHighjacker {
             public publisher:IPublisher;
+
             registerPublisher(publisher:IPublisher) {
                 this.publisher = publisher;
             }
@@ -51,13 +61,37 @@ module Core {
                     session.createdAt = Date.now();
                     if(this.publisher !== undefined) {
                         this.publisher.publish(session);
-                        this.sessionStorage.currentSession = session;
-                        this.sessionStorage.storeSession();
+                        this.sessionStorageService.currentSession = session;
+                        this.sessionStorageService.storeSession();
                     }
                 });
             }
 
-            constructor(public sessionKey:SessionKey, public sessionStorage:SessionStorage) {}
+            constructor(public sessionKey:SessionKey, public sessionStorageService:SessionStorageService) {
+                super();
+            }
+        }
+        
+        export class TransitHighjacker extends IHighjacker {
+            public publisher:IPublisher;
+
+            public registerPublisher(publisher:IPublisher) {
+                this.publisher = publisher;
+            }
+
+            public start() {
+                $(document).ready(() => {
+                    if(TransitStorageService.getInstance(this.sessionKey).publish) {
+                        let currentTransit:Transit = TransitStorageService.getInstance(this.sessionKey).currentTransit;
+                        this.publisher.publish(currentTransit);   
+                        TransitStorageService.getInstance(this.sessionKey).storeTransit();
+                    }
+                });
+            }
+
+            constructor(public sessionKey:SessionKey) {
+                super();
+            }
         }
     }
 }
