@@ -3,16 +3,22 @@
 module Core {
     export namespace Highjacker {
         import IPublisher = Core.Publishers.IPublisher;
+        import IDefaultPublisher = Core.Publishers.IDefaultPublisher;
         import Session = Models.Session;
         import Transit = Models.Transit;
+        import Hit = Models.Hit;
         import BrowserVersion = Models.BrowserVersion;
         import SessionKey = Core.Configuration.SessionKey;
+        import TransitKey = Core.Configuration.TransitKey;
         import SessionStorageService = Core.Storage.SessionStorageService;
         import TransitStorageService = Core.Storage.TransitStorageService;
         
         export interface IHighjackedInfo {};
         export class IHighjacker {
             public publisher:IPublisher;
+
+            then(){};
+
             registerPublisher(publisher:IPublisher) {
                 this.publisher = publisher;
             }
@@ -35,12 +41,6 @@ module Core {
         }
 
         export class SessionHighjacker extends IHighjacker {
-            public publisher:IPublisher;
-
-            registerPublisher(publisher:IPublisher) {
-                this.publisher = publisher;
-            }
-
             /**
             * This will handle onload event.
             * It will push to webserver all information in cookie
@@ -73,12 +73,6 @@ module Core {
         }
         
         export class TransitHighjacker extends IHighjacker {
-            public publisher:IPublisher;
-
-            public registerPublisher(publisher:IPublisher) {
-                this.publisher = publisher;
-            }
-
             public start() {
                 $(document).ready(() => {
                     if(TransitStorageService.getInstance(this.sessionKey).publish) {
@@ -90,6 +84,39 @@ module Core {
             }
 
             constructor(public sessionKey:SessionKey) {
+                super();
+            }
+        }
+
+        export class HitHighjacker extends IHighjacker {
+            public hit:boolean = false;
+            public e:JQueryEventObject;
+            public start() {
+                $('a').click((e:JQueryEventObject) => {
+                    if(!this.hit) {
+                        e.preventDefault();
+                        let toLink:string = (<any> e.target.attributes).href.value;
+                        let fromLink:string =  window.location.toString();
+                        let hit = {
+                            hitId: this.transitKey.getKey() + "#" + Date.now(),
+                            transitId: this.transitKey.getKey(),
+                            toPage: toLink,
+                            fromPage: fromLink
+                        };
+                        this.e = e;
+                        this.publisher.publish(hit, () => {
+                            this.hit = true;
+                            this.e.target["click"]();
+                        });
+                    }
+                });
+            }
+
+            public then() {
+                console.log("finito");
+            }
+
+            constructor(public transitKey:TransitKey) {
                 super();
             }
         }

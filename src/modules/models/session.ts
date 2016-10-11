@@ -46,17 +46,17 @@ module Models {
     //Track the user Hit
     export interface Hit {
         hitID: number;
-        transitId: number;
-        clickId: number;    //Start on 1 if is the first click at the website for the given transit, go on ascending order
-        referrerUrl: string;
-        traffifChannelId: number;
-        refTag: string;     //We can send a parameter to track custom sources
+        transitId: string;
+        // clickId: number;    //Start on 1 if is the first click at the website for the given transit, go on ascending order
+        // referrerUrl: string;
+        // traffifChannelId: number;
+        // refTag: string;     //We can send a parameter to track custom sources
         toPage: string;
         fromPage: string;
-        pageType: string;   //We will need to define Page Types, for example: checkout, gateway, detail page, etc
-        productId: string;  //If the hit is on a product we need to store it`s ID
-        category: string;   //If the hit is on a browse category, store the category
-        isLeave: boolean    //True if this is the last Click for the given Transit
+        // pageType: string;   //We will need to define Page Types, for example: checkout, gateway, detail page, etc
+        // productId: string;  //If the hit is on a product we need to store it`s ID
+        // category: string;   //If the hit is on a browse category, store the category
+        // isLeave: boolean    //True if this is the last Click for the given Transit
     }
     
     //Track the search queries that happened at the website

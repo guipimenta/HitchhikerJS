@@ -105,6 +105,7 @@ module Core {
                         transit.duration += (Date.now() - transit.lastLoad);
                         this.currentTransit = transit;    
                         this.publish = false;
+                        this.Key = transitKey;
                     }
                 } else {
                     // creates a fresh instance of transit

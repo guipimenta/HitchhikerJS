@@ -16,6 +16,10 @@ module Bootstrap {
             pubUrl: config.transitTrackUrl
         });
 
+        let hitPublisher = new Core.Publishers.DefaultPublisher({
+            pubUrl: config.hitTrackUrl
+        });
+
         let userid = "";
         if(config.userid.isCookie === false || config.userid.isCookie === undefined) {
             userid = config.userid.value;
@@ -35,5 +39,9 @@ module Bootstrap {
         let transitHighjacker = new Core.Highjacker.TransitHighjacker(sessionStorage.Key);
         transitHighjacker.registerPublisher(transitPublisher);
         transitHighjacker.start();
+
+        let hitHighjacker = new Core.Highjacker.HitHighjacker( TransitStorageService.getInstance(this.sessionKey).Key);
+        hitHighjacker.registerPublisher(hitPublisher);
+        hitHighjacker.start();
     }
 }

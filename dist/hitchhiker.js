@@ -149,6 +149,7 @@ var Core;
                         transit.duration += (Date.now() - transit.lastLoad);
                         this.currentTransit = transit;
                         this.publish = false;
+                        this.Key = transitKey;
                     }
                 }
                 else {
@@ -199,13 +200,18 @@ var Core;
                 this.pubConf = pubConf;
                 this.pubUrl = pubConf.pubUrl;
             }
-            DefaultPublisher.prototype.publish = function (pubInfo) {
+            DefaultPublisher.prototype.publish = function (pubInfo, callback) {
+                if (callback == undefined) {
+                    callback = function () { };
+                }
                 $.ajax({
                     url: this.pubUrl,
                     method: "POST",
                     data: {
                         payload: pubInfo
                     }
+                }).then(function () {
+                    callback();
                 });
             };
             return DefaultPublisher;
@@ -247,6 +253,8 @@ var Core;
         var IHighjacker = (function () {
             function IHighjacker() {
             }
+            IHighjacker.prototype.then = function () { };
+            ;
             IHighjacker.prototype.registerPublisher = function (publisher) {
                 this.publisher = publisher;
             };
@@ -274,9 +282,6 @@ var Core;
                 this.sessionKey = sessionKey;
                 this.sessionStorageService = sessionStorageService;
             }
-            SessionHighjacker.prototype.registerPublisher = function (publisher) {
-                this.publisher = publisher;
-            };
             /**
             * This will handle onload event.
             * It will push to webserver all information in cookie
@@ -312,9 +317,6 @@ var Core;
                 _super.call(this);
                 this.sessionKey = sessionKey;
             }
-            TransitHighjacker.prototype.registerPublisher = function (publisher) {
-                this.publisher = publisher;
-            };
             TransitHighjacker.prototype.start = function () {
                 var _this = this;
                 $(document).ready(function () {
@@ -328,6 +330,40 @@ var Core;
             return TransitHighjacker;
         })(IHighjacker);
         Highjacker.TransitHighjacker = TransitHighjacker;
+        var HitHighjacker = (function (_super) {
+            __extends(HitHighjacker, _super);
+            function HitHighjacker(transitKey) {
+                _super.call(this);
+                this.transitKey = transitKey;
+                this.hit = false;
+            }
+            HitHighjacker.prototype.start = function () {
+                var _this = this;
+                $('a').click(function (e) {
+                    if (!_this.hit) {
+                        e.preventDefault();
+                        var toLink = e.target.attributes.href.value;
+                        var fromLink = window.location.toString();
+                        var hit = {
+                            hitId: _this.transitKey.getKey() + "#" + Date.now(),
+                            transitId: _this.transitKey.getKey(),
+                            toPage: toLink,
+                            fromPage: fromLink
+                        };
+                        _this.e = e;
+                        _this.publisher.publish(hit, function () {
+                            _this.hit = true;
+                            _this.e.target["click"]();
+                        });
+                    }
+                });
+            };
+            HitHighjacker.prototype.then = function () {
+                console.log("finito");
+            };
+            return HitHighjacker;
+        })(IHighjacker);
+        Highjacker.HitHighjacker = HitHighjacker;
     })(Highjacker = Core.Highjacker || (Core.Highjacker = {}));
 })(Core || (Core = {}));
 ;/// <reference path="../../hitchhikerjs.ts" />
@@ -335,12 +371,16 @@ var Bootstrap;
 (function (Bootstrap) {
     var CookieHighjacker = Core.Highjacker.getCookieField;
     var SessionStorageService = Core.Storage.SessionStorageService;
+    var TransitStorageService = Core.Storage.TransitStorageService;
     function BasicBootstrap(config) {
         var sessionPublisher = new Core.Publishers.SessionPublisher({
             pubUrl: config.sessionTrackUrl
         });
         var transitPublisher = new Core.Publishers.DefaultPublisher({
             pubUrl: config.transitTrackUrl
+        });
+        var hitPublisher = new Core.Publishers.DefaultPublisher({
+            pubUrl: config.hitTrackUrl
         });
         var userid = "";
         if (config.userid.isCookie === false || config.userid.isCookie === undefined) {
@@ -361,6 +401,9 @@ var Bootstrap;
         var transitHighjacker = new Core.Highjacker.TransitHighjacker(sessionStorage.Key);
         transitHighjacker.registerPublisher(transitPublisher);
         transitHighjacker.start();
+        var hitHighjacker = new Core.Highjacker.HitHighjacker(TransitStorageService.getInstance(this.sessionKey).Key);
+        hitHighjacker.registerPublisher(hitPublisher);
+        hitHighjacker.start();
     }
     Bootstrap.BasicBootstrap = BasicBootstrap;
 })(Bootstrap || (Bootstrap = {}));

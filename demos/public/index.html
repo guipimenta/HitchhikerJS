@@ -7,17 +7,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.0.0/bowser.min.js"></script>
     <script src="js/hitchhiker.js"></script>
     <script>
+      $(document).ready(function() {
         Bootstrap.BasicBootstrap({
             sessionTrackUrl: "/pubTest",
             transitTrackUrl: "/transit",
+            hitTrackUrl: "/hit",
             userid: {
               isCookie: true,
               value: 'userid'
             }
         });
+      })
     </script>
   </head>
   <body>
       <h1>Tracking sample</h1>
+
+      <a href="/redirect/test">Click here to a tracked link</a>
   </body>
 </html>

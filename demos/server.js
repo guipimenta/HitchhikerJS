@@ -26,6 +26,12 @@ app.post('/transit', function (req, res) {
     res.send('Received');
 });
 
+app.post('/hit', function (req, res) {
+    console.log("Received!");
+    console.log(req.body);
+    res.send('Received');
+});
+
 app.get("/set/cookie", function(req, res) {
     res.send("cookie set");
 });
