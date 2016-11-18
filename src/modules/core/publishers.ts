@@ -55,5 +55,34 @@ module Core {
                 this.pubUrl = pubConf.pubUrl;
             }
         }
+
+        export class ButtonHitPublisher implements IPublisher {
+            private SessionStorageKey = "hitchhiker.buttonhitpublisher";
+            private pubUrl:string;
+            
+            publish(pubInfo:IPubInfo) {
+                localStorage.setItem(this.SessionStorageKey, JSON.stringify(pubInfo));
+            }
+
+            publishAjax(pubInfo:IPubInfo) {
+                $.ajax({
+                    url: this.pubUrl,
+                    method: "POST",
+                    data: {
+                        sessionInfo:pubInfo
+                    }
+                });
+            }
+
+            constructor(public pubConf: IPublisherConfig) {
+                let pubInfo = JSON.parse(localStorage.getItem(this.SessionStorageKey));
+                this.pubUrl = pubConf.pubUrl;
+                if(pubInfo != undefined && pubInfo != null) {
+                    pubInfo.toPage = window.location.href;
+                    this.publishAjax(pubInfo);
+                    localStorage.removeItem(this.SessionStorageKey);
+                }
+            }
+        }
     }
 }

@@ -112,10 +112,33 @@ module Core {
                 });
             }
 
-            public then() {
-                console.log("finito");
+            constructor(public transitKey:TransitKey) {
+                super();
             }
+        }
 
+        export class HitButtonHighjacker extends IHighjacker {
+            public hit:boolean = false;
+            public e:JQueryEventObject;
+            public start() {
+                $(':button').click((e:JQueryEventObject) => {
+                    if(!this.hit) {
+                        e.preventDefault();
+                        let fromLink:string = window.location.toString();
+                        let hit = {
+                            hitId:     this.transitKey.getKey() + "#" + Date.now(),
+                            transitId: this.transitKey.getKey(),
+                            fromPage: fromLink,
+                            toPage: ""
+                        };
+                        this.e = e;
+                        this.publisher.publish(hit, () => {
+                            this.hit=true;
+                            this.e.target["click"]();
+                        });
+                    }
+                });
+            }
             constructor(public transitKey:TransitKey) {
                 super();
             }

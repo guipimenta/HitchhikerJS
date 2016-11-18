@@ -234,6 +234,33 @@ var Core;
             return SessionPublisher;
         })();
         Publishers.SessionPublisher = SessionPublisher;
+        var ButtonHitPublisher = (function () {
+            function ButtonHitPublisher(pubConf) {
+                this.pubConf = pubConf;
+                this.SessionStorageKey = "hitchhiker.buttonhitpublisher";
+                var pubInfo = JSON.parse(localStorage.getItem(this.SessionStorageKey));
+                this.pubUrl = pubConf.pubUrl;
+                if (pubInfo != undefined && pubInfo != null) {
+                    pubInfo.toPage = window.location.href;
+                    this.publishAjax(pubInfo);
+                    localStorage.removeItem(this.SessionStorageKey);
+                }
+            }
+            ButtonHitPublisher.prototype.publish = function (pubInfo) {
+                localStorage.setItem(this.SessionStorageKey, JSON.stringify(pubInfo));
+            };
+            ButtonHitPublisher.prototype.publishAjax = function (pubInfo) {
+                $.ajax({
+                    url: this.pubUrl,
+                    method: "POST",
+                    data: {
+                        sessionInfo: pubInfo
+                    }
+                });
+            };
+            return ButtonHitPublisher;
+        })();
+        Publishers.ButtonHitPublisher = ButtonHitPublisher;
     })(Publishers = Core.Publishers || (Core.Publishers = {}));
 })(Core || (Core = {}));
 ;/// <reference path="../../hitchhikerjs.ts" />
@@ -358,12 +385,39 @@ var Core;
                     }
                 });
             };
-            HitHighjacker.prototype.then = function () {
-                console.log("finito");
-            };
             return HitHighjacker;
         })(IHighjacker);
         Highjacker.HitHighjacker = HitHighjacker;
+        var HitButtonHighjacker = (function (_super) {
+            __extends(HitButtonHighjacker, _super);
+            function HitButtonHighjacker(transitKey) {
+                _super.call(this);
+                this.transitKey = transitKey;
+                this.hit = false;
+            }
+            HitButtonHighjacker.prototype.start = function () {
+                var _this = this;
+                $(':button').click(function (e) {
+                    if (!_this.hit) {
+                        e.preventDefault();
+                        var fromLink = window.location.toString();
+                        var hit = {
+                            hitId: _this.transitKey.getKey() + "#" + Date.now(),
+                            transitId: _this.transitKey.getKey(),
+                            fromPage: fromLink,
+                            toPage: ""
+                        };
+                        _this.e = e;
+                        _this.publisher.publish(hit, function () {
+                            _this.hit = true;
+                            _this.e.target["click"]();
+                        });
+                    }
+                });
+            };
+            return HitButtonHighjacker;
+        })(IHighjacker);
+        Highjacker.HitButtonHighjacker = HitButtonHighjacker;
     })(Highjacker = Core.Highjacker || (Core.Highjacker = {}));
 })(Core || (Core = {}));
 ;/// <reference path="../../hitchhikerjs.ts" />
@@ -380,6 +434,9 @@ var Bootstrap;
             pubUrl: config.transitTrackUrl
         });
         var hitPublisher = new Core.Publishers.DefaultPublisher({
+            pubUrl: config.hitTrackUrl
+        });
+        var buttonHitPublisher = new Core.Publishers.ButtonHitPublisher({
             pubUrl: config.hitTrackUrl
         });
         var userid = "";
@@ -404,6 +461,9 @@ var Bootstrap;
         var hitHighjacker = new Core.Highjacker.HitHighjacker(TransitStorageService.getInstance(this.sessionKey).Key);
         hitHighjacker.registerPublisher(hitPublisher);
         hitHighjacker.start();
+        var buttonHighjacker = new Core.Highjacker.HitButtonHighjacker(TransitStorageService.getInstance(this.sessionKey).Key);
+        buttonHighjacker.registerPublisher(buttonHitPublisher);
+        buttonHighjacker.start();
     }
     Bootstrap.BasicBootstrap = BasicBootstrap;
 })(Bootstrap || (Bootstrap = {}));

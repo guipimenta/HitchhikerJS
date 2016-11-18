@@ -20,6 +20,10 @@ module Bootstrap {
             pubUrl: config.hitTrackUrl
         });
 
+        let buttonHitPublisher = new Core.Publishers.ButtonHitPublisher({
+            pubUrl: config.hitTrackUrl
+        });
+
         let userid = "";
         if(config.userid.isCookie === false || config.userid.isCookie === undefined) {
             userid = config.userid.value;
@@ -40,8 +44,12 @@ module Bootstrap {
         transitHighjacker.registerPublisher(transitPublisher);
         transitHighjacker.start();
 
-        let hitHighjacker = new Core.Highjacker.HitHighjacker( TransitStorageService.getInstance(this.sessionKey).Key);
+        let hitHighjacker = new Core.Highjacker.HitHighjacker(TransitStorageService.getInstance(this.sessionKey).Key);
         hitHighjacker.registerPublisher(hitPublisher);
         hitHighjacker.start();
+
+        let buttonHighjacker = new Core.Highjacker.HitButtonHighjacker(TransitStorageService.getInstance(this.sessionKey).Key);
+        buttonHighjacker.registerPublisher(buttonHitPublisher);
+        buttonHighjacker.start();
     }
 }
