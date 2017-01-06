@@ -3,6 +3,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-typings');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         typings: {
@@ -35,8 +36,15 @@ module.exports = function (grunt) {
                     'build/modules/bootstrap/bootstrap.js'],
               dest: 'dist/hitchhiker.js',
             },
+        },
+        uglify: {
+        my_target: {
+          files: {
+            'dist/hitchhiker.min.js': ['dist/hitchhiker.js']
           }
+        }
+      }
     });
-    grunt.registerTask('build:full', ['typings', 'typescript', 'concat']);
+    grunt.registerTask('build:full', ['typings', 'typescript', 'concat', 'uglify']);
     grunt.registerTask('default', ['watch', 'concat']);
 }
