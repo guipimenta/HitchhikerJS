@@ -14,7 +14,8 @@
             hitTrackUrl: "/hit",
             userid: {
               isCookie: true,
-              value: 'userid'
+              value: 'userid',
+              visitor: 'visitor'
             }
         });
       })
@@ -27,6 +28,11 @@
       <h1>Tracking sample</h1>
 
       <a href="/redirect/test" id="mylink">Click here to a tracked link</a>
+
+      <a href="/manifesto-mj">
+            <b>Manifesto MJ</b>
+      </a>
+
       <button id="click" onclick="gotoLink();"> click-me! </button>
   </body>
 </html>

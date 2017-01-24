@@ -29,6 +29,9 @@ module Bootstrap {
             userid = config.userid.value;
         } else {
             userid = CookieHighjacker(config.userid.value);
+            if(userid === undefined) {
+                userid = config.userid.visitor;
+            }
         }
         let sessionStorage = SessionStorageService.getInstance(userid);
         if(sessionStorage.getPreviosSession() === null) {

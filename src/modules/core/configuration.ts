@@ -19,7 +19,8 @@ module Core {
              */
             userid: {
                 isCookie: boolean,
-                value: string
+                value: string,
+                visitor: string
             }
         }
 

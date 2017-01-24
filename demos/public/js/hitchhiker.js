@@ -238,16 +238,16 @@ var Core;
             function ButtonHitPublisher(pubConf) {
                 this.pubConf = pubConf;
                 this.SessionStorageKey = "hitchhiker.buttonhitpublisher";
-                var pubInfo = JSON.parse(localStorage.getItem(this.SessionStorageKey));
+                var pubInfo = JSON.parse(sessionStorage.getItem(this.SessionStorageKey));
                 this.pubUrl = pubConf.pubUrl;
                 if (pubInfo != undefined && pubInfo != null) {
                     pubInfo.toPage = window.location.href;
                     this.publishAjax(pubInfo);
-                    localStorage.removeItem(this.SessionStorageKey);
+                    sessionStorage.removeItem(this.SessionStorageKey);
                 }
             }
             ButtonHitPublisher.prototype.publish = function (pubInfo) {
-                localStorage.setItem(this.SessionStorageKey, JSON.stringify(pubInfo));
+                sessionStorage.setItem(this.SessionStorageKey, JSON.stringify(pubInfo));
             };
             ButtonHitPublisher.prototype.publishAjax = function (pubInfo) {
                 $.ajax({

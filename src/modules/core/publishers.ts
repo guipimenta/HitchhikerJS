@@ -61,7 +61,7 @@ module Core {
             private pubUrl:string;
             
             publish(pubInfo:IPubInfo) {
-                localStorage.setItem(this.SessionStorageKey, JSON.stringify(pubInfo));
+                sessionStorage.setItem(this.SessionStorageKey, JSON.stringify(pubInfo));
             }
 
             publishAjax(pubInfo:IPubInfo) {
@@ -75,12 +75,12 @@ module Core {
             }
 
             constructor(public pubConf: IPublisherConfig) {
-                let pubInfo = JSON.parse(localStorage.getItem(this.SessionStorageKey));
+                let pubInfo = JSON.parse(sessionStorage.getItem(this.SessionStorageKey));
                 this.pubUrl = pubConf.pubUrl;
                 if(pubInfo != undefined && pubInfo != null) {
                     pubInfo.toPage = window.location.href;
                     this.publishAjax(pubInfo);
-                    localStorage.removeItem(this.SessionStorageKey);
+                    sessionStorage.removeItem(this.SessionStorageKey);
                 }
             }
         }
