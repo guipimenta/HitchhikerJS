@@ -10,18 +10,18 @@ module Bootstrap {
 
 	export function BasicBootstrap(config:ServerConfiguration) {
 	    let sessionPublisher = new Core.Publishers.SessionPublisher({
-            pubUrl: config.sessionTrackUrl
+            pubUrl: config.serviceUrl !== undefined ? config.serviceUrl : config.sessionTrackUrl
         });
         let transitPublisher = new Core.Publishers.DefaultPublisher({
-            pubUrl: config.transitTrackUrl
+            pubUrl: config.serviceUrl !== undefined ? config.serviceUrl : config.transitTrackUrl
         });
 
         let hitPublisher = new Core.Publishers.DefaultPublisher({
-            pubUrl: config.hitTrackUrl
+            pubUrl: config.serviceUrl !== undefined ? config.serviceUrl : config.hitTrackUrl
         });
 
         let buttonHitPublisher = new Core.Publishers.ButtonHitPublisher({
-            pubUrl: config.hitTrackUrl
+            pubUrl: config.serviceUrl !== undefined ? config.serviceUrl : config.hitTrackUrl
         });
 
         let userid = "";

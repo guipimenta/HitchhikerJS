@@ -364,12 +364,23 @@ var Core;
                 this.transitKey = transitKey;
                 this.hit = false;
             }
+            HitHighjacker.prototype.getParent = function (e, level, maxLevel) {
+                if (level <= maxLevel) {
+                    if (e.attributes["href"] === undefined) {
+                        return this.getParent(e.parentElement, level++, maxLevel);
+                    }
+                    else {
+                        return e.attributes["href"].value;
+                    }
+                }
+                return "";
+            };
             HitHighjacker.prototype.start = function () {
                 var _this = this;
                 $('a').click(function (e) {
                     if (!_this.hit) {
                         e.preventDefault();
-                        var toLink = e.target.attributes.href.value;
+                        var toLink = _this.getParent(e.target, 0, 10);
                         var fromLink = window.location.toString();
                         var hit = {
                             hitId: _this.transitKey.getKey() + "#" + Date.now(),
@@ -428,16 +439,16 @@ var Bootstrap;
     var TransitStorageService = Core.Storage.TransitStorageService;
     function BasicBootstrap(config) {
         var sessionPublisher = new Core.Publishers.SessionPublisher({
-            pubUrl: config.sessionTrackUrl
+            pubUrl: config.serviceUrl !== undefined ? config.serviceUrl : config.sessionTrackUrl
         });
         var transitPublisher = new Core.Publishers.DefaultPublisher({
-            pubUrl: config.transitTrackUrl
+            pubUrl: config.serviceUrl !== undefined ? config.serviceUrl : config.transitTrackUrl
         });
         var hitPublisher = new Core.Publishers.DefaultPublisher({
-            pubUrl: config.hitTrackUrl
+            pubUrl: config.serviceUrl !== undefined ? config.serviceUrl : config.hitTrackUrl
         });
         var buttonHitPublisher = new Core.Publishers.ButtonHitPublisher({
-            pubUrl: config.hitTrackUrl
+            pubUrl: config.serviceUrl !== undefined ? config.serviceUrl : config.hitTrackUrl
         });
         var userid = "";
         if (config.userid.isCookie === false || config.userid.isCookie === undefined) {
@@ -445,6 +456,9 @@ var Bootstrap;
         }
         else {
             userid = CookieHighjacker(config.userid.value);
+            if (userid === undefined) {
+                userid = config.userid.visitor;
+            }
         }
         var sessionStorage = SessionStorageService.getInstance(userid);
         if (sessionStorage.getPreviosSession() === null) {

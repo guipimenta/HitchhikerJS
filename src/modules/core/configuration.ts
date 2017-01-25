@@ -13,6 +13,8 @@ module Core {
 
             hitTrackUrl: string;
 
+            serviceUrl?: string;
+
             /**
              * Describes the userid. Can be on cookie, or can be the value as string.
              * @type {string}

@@ -439,16 +439,16 @@ var Bootstrap;
     var TransitStorageService = Core.Storage.TransitStorageService;
     function BasicBootstrap(config) {
         var sessionPublisher = new Core.Publishers.SessionPublisher({
-            pubUrl: config.sessionTrackUrl
+            pubUrl: config.serviceUrl !== undefined ? config.serviceUrl : config.sessionTrackUrl
         });
         var transitPublisher = new Core.Publishers.DefaultPublisher({
-            pubUrl: config.transitTrackUrl
+            pubUrl: config.serviceUrl !== undefined ? config.serviceUrl : config.transitTrackUrl
         });
         var hitPublisher = new Core.Publishers.DefaultPublisher({
-            pubUrl: config.hitTrackUrl
+            pubUrl: config.serviceUrl !== undefined ? config.serviceUrl : config.hitTrackUrl
         });
         var buttonHitPublisher = new Core.Publishers.ButtonHitPublisher({
-            pubUrl: config.hitTrackUrl
+            pubUrl: config.serviceUrl !== undefined ? config.serviceUrl : config.hitTrackUrl
         });
         var userid = "";
         if (config.userid.isCookie === false || config.userid.isCookie === undefined) {
