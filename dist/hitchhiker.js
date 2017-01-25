@@ -364,12 +364,23 @@ var Core;
                 this.transitKey = transitKey;
                 this.hit = false;
             }
+            HitHighjacker.prototype.getParent = function (e, level, maxLevel) {
+                if (level <= maxLevel) {
+                    if (e.target.attributes["href"] === undefined) {
+                        return this.getParent(e, level++, maxLevel);
+                    }
+                    else {
+                        return e.target.attributes["href"];
+                    }
+                }
+                return "";
+            };
             HitHighjacker.prototype.start = function () {
                 var _this = this;
                 $('a').click(function (e) {
                     if (!_this.hit) {
                         e.preventDefault();
-                        var toLink = e.target.attributes.href.value;
+                        var toLink = _this.getParent(e, 0, 10);
                         var fromLink = window.location.toString();
                         var hit = {
                             hitId: _this.transitKey.getKey() + "#" + Date.now(),
@@ -445,6 +456,9 @@ var Bootstrap;
         }
         else {
             userid = CookieHighjacker(config.userid.value);
+            if (userid === undefined) {
+                userid = config.userid.visitor;
+            }
         }
         var sessionStorage = SessionStorageService.getInstance(userid);
         if (sessionStorage.getPreviosSession() === null) {

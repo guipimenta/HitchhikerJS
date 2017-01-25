@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use(function (req, res, next) {
     console.log("adding cookie");
     res.cookie('userid', 'myuseride');
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
 

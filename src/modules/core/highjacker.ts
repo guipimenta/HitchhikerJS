@@ -91,11 +91,23 @@ module Core {
         export class HitHighjacker extends IHighjacker {
             public hit:boolean = false;
             public e:JQueryEventObject;
+
+            private getParent(e:JQueryEventObject, level:number, maxLevel:number) {
+                if(level <= maxLevel) {
+                    if(e.target.attributes["href"] === undefined) {
+                        return this.getParent(e, level++, maxLevel);
+                    } else {
+                        return e.target.attributes["href"];
+                    }
+                }
+                return "";
+            }
+
             public start() {
                 $('a').click((e:JQueryEventObject) => {
                     if(!this.hit) {
                         e.preventDefault();
-                        let toLink:string = (<any> e.target.attributes).href.value;
+                        let toLink = this.getParent(e, 0, 10);
                         let fromLink:string =  window.location.toString();
                         let hit = {
                             hitId: this.transitKey.getKey() + "#" + Date.now(),
