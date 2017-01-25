@@ -92,12 +92,12 @@ module Core {
             public hit:boolean = false;
             public e:JQueryEventObject;
 
-            private getParent(e:JQueryEventObject, level:number, maxLevel:number) {
+            private getParent(e:HTMLElement, level:number, maxLevel:number) {
                 if(level <= maxLevel) {
-                    if(e.target.attributes["href"] === undefined) {
-                        return this.getParent(e, level++, maxLevel);
+                    if(e.attributes["href"] === undefined) {
+                        return this.getParent(e.parentElement, level++, maxLevel);
                     } else {
-                        return e.target.attributes["href"];
+                        return e.attributes["href"].value;
                     }
                 }
                 return "";
@@ -107,7 +107,7 @@ module Core {
                 $('a').click((e:JQueryEventObject) => {
                     if(!this.hit) {
                         e.preventDefault();
-                        let toLink = this.getParent(e, 0, 10);
+                        let toLink = this.getParent((<any>e.target), 0, 10);
                         let fromLink:string =  window.location.toString();
                         let hit = {
                             hitId: this.transitKey.getKey() + "#" + Date.now(),

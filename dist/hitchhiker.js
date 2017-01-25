@@ -366,11 +366,11 @@ var Core;
             }
             HitHighjacker.prototype.getParent = function (e, level, maxLevel) {
                 if (level <= maxLevel) {
-                    if (e.target.attributes["href"] === undefined) {
-                        return this.getParent(e, level++, maxLevel);
+                    if (e.attributes["href"] === undefined) {
+                        return this.getParent(e.parentElement, level++, maxLevel);
                     }
                     else {
-                        return e.target.attributes["href"];
+                        return e.attributes["href"].value;
                     }
                 }
                 return "";
@@ -380,7 +380,7 @@ var Core;
                 $('a').click(function (e) {
                     if (!_this.hit) {
                         e.preventDefault();
-                        var toLink = _this.getParent(e, 0, 10);
+                        var toLink = _this.getParent(e.target, 0, 10);
                         var fromLink = window.location.toString();
                         var hit = {
                             hitId: _this.transitKey.getKey() + "#" + Date.now(),
